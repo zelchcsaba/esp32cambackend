@@ -1,16 +1,29 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as bodyParser from 'body-parser';
+import * as http from 'http';
+import { initWebSocketServer } from './websocket.gateway';
+import { ControlService } from './control/control.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+  });
 
-app.enableCors({
-  origin: '*', // VAGY pontosabban: ['http://192.168.1.123:5173']
-  methods: ['GET', 'POST'],
-});
-  await app.listen(3000, '0.0.0.0');
+  // Létrehozunk egy HTTP szervert, amit mind a NestJS, mind a WebSocket használ
+  const httpServer = http.createServer(app.getHttpAdapter().getInstance());
+
+  const controlService = app.get(ControlService);
+
+  await app.init(); // fontos, hogy előbb init, és utána listen
+
+  httpServer.listen(3000, '0.0.0.0', () => {
+    console.log('🚀 HTTP + WS szerver fut a http://<IP>:3000 címen');
+
+  // Indítjuk a WebSocket szervert a megfelelő HTTP szerverrel
+  initWebSocketServer(httpServer, controlService);
+  });
 }
 bootstrap();
