@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+<<<<<<< HEAD
 import * as http from 'http';
 import { initWebSocketServer } from './websocket.gateway';
 import { ControlService } from './control/control.service';
+=======
+import { ConfigService } from '@nestjs/config';
+>>>>>>> master
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+<<<<<<< HEAD
   app.enableCors({
     origin: '*',
     methods: ['GET', 'POST'],
@@ -25,5 +30,18 @@ async function bootstrap() {
   // Indítjuk a WebSocket szervert a megfelelő HTTP szerverrel
   initWebSocketServer(httpServer, controlService);
   });
+=======
+  const configService = app.get(ConfigService);
+  const origin = configService.get<string>('FRONTEND_ORIGIN') || '*';
+
+  app.enableCors({
+    origin,
+    methods: ['GET', 'POST'],
+    credentials: true,
+  });
+
+  const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0');
+>>>>>>> master
 }
 bootstrap();
