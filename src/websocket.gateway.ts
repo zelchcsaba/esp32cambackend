@@ -60,8 +60,15 @@ export function initWebSocketServer(server: http.Server, controlService: Control
   try {
     const data = JSON.parse(message.toString());
     if (typeof data.x === 'number' && typeof data.y === 'number') {
+
       // pl. tárold vagy használd fel
       controlService.setLastCoordinates(data.x, data.y);
+
+    } else if (data.type === 'slider' && typeof data.value === 'number') {
+
+      controlService.setZCoordinate(data.value);
+      // Itt kezeld a slider értéket, pl. külön service-hez adod
+
     }
   } catch (e) {
     console.warn('Nem sikerült JSON-t olvasni a websocket üzenetből:', e);
