@@ -17,7 +17,7 @@ export class ControlService {
   }
 
   getLastCoordinates() {
-    return { x: this.lastX, y: this.lastY , z: this.lastZ , w: this.shoot};
+    return { x: this.lastX, y: this.lastY , z: this.lastZ};
   }
 
   setShootState(state: number) {
