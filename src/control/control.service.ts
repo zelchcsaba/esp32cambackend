@@ -5,6 +5,7 @@ export class ControlService {
   private lastX = 0;
   private lastY = 0;
   private lastZ = 50;
+  private shoot = 0;
 
   setLastCoordinates(x: number, y: number) {
     this.lastX = x;
@@ -16,6 +17,10 @@ export class ControlService {
   }
 
   getLastCoordinates() {
-    return { x: this.lastX, y: this.lastY , z: this.lastZ };
+    return { x: this.lastX, y: this.lastY , z: this.lastZ , w: this.shoot};
+  }
+
+  setShootState(state: number) {
+    this.shoot = state;
   }
 }

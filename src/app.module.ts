@@ -1,6 +1,4 @@
 // src/app.module.ts
-import { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ControlController } from './control/control.controller';

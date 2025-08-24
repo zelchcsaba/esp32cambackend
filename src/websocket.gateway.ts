@@ -42,6 +42,7 @@ export function initWebSocketServer(server: http.Server, controlService: Control
     if (msg === 'get_coords') {
       const coords = controlService.getLastCoordinates();
       ws.send(JSON.stringify(coords));
+      controlService.setShootState(0); 
     } else {
       console.log('Ismeretlen üzenet:', msg);
     }
@@ -69,6 +70,9 @@ export function initWebSocketServer(server: http.Server, controlService: Control
       controlService.setZCoordinate(data.value);
       // Itt kezeld a slider értéket, pl. külön service-hez adod
 
+    }
+    else if(data.type === 'button' && typeof data.value === 'string') {
+      controlService.setShootState(1);
     }
   } catch (e) {
     console.warn('Nem sikerült JSON-t olvasni a websocket üzenetből:', e);
